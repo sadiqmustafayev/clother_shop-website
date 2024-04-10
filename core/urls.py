@@ -14,8 +14,8 @@ from core.views import (
 urlpatterns = [
     path('', index, name='home'), 
     path('about/', about, name='about'),
-    path('blog-details/', blog_details, name='blog_details'),
     path('blog/', blog, name='blog'),
+    path('blog-details/<int:blog_id>', blog_details, name='blog_details'),
     path('checkout/', checkout, name='checkout'),
     path('contact-us/', contact_us, name='contact_us'),
     path('shop-details/', shop_details, name='shop_details'),

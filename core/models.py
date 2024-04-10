@@ -97,6 +97,8 @@ class Product(BaseModel):
 class Blog(BaseModel):
   title = models.CharField(max_length=100)
   desription = models.TextField()
+  aforism = models.CharField(max_length=100)
+  author = models.CharField(max_length=50)
   image = models.ImageField(upload_to='blog/')
 
   def __str__(self):
@@ -121,3 +123,24 @@ class ContactUs(BaseModel):
   class Meta:
     verbose_name = ("Contact Us")
     verbose_name_plural = ("Contact Us")
+
+
+class Setting(BaseModel):
+  name = models.CharField(max_length=50)
+  address = models.CharField(max_length=100)
+  phone = models.CharField(max_length=50)
+  email = models.EmailField()
+  facebook = models.URLField()
+  instagram = models.URLField()
+  pinterest = models.URLField()
+  twitter = models.URLField()
+  youtube = models.URLField()
+  logo = models.ImageField(upload_to='logo/')
+  blog_bg_image = models.ImageField(upload_to='blog_bg/')
+  location = models.URLField(max_length=2000)
+  slogan = models.CharField(max_length=2000)
+
+
+  class Meta:
+    verbose_name = ("Setting")
+    verbose_name_plural = ("Setting")

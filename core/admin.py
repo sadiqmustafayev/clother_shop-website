@@ -51,7 +51,7 @@ class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at')
     search_fields = ('title', 'desription')
     list_filter = ('created_at',)
-    fields = ('title', 'desription', 'image', 'is_active')
+    fields = ('title', 'desription', 'image', 'aforism', 'author', 'is_active')
     ordering = ('-created_at',)
 
 admin.site.register(Product, ProductAdmin)
@@ -61,3 +61,4 @@ admin.site.register(Currency)
 admin.site.register(Color)
 admin.site.register(Size)
 admin.site.register(ContactUs)
+admin.site.register(Setting)
