@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from core.utills.replace_letter import replace_letter
+
 
 SIZE = (
   ('XS', 'Extra Small'),
@@ -95,9 +97,10 @@ class Product(BaseModel):
 
 
 class Blog(BaseModel):
+  slug = models.SlugField(max_length=100, unique=True)
   title = models.CharField(max_length=100)
   desription = models.TextField()
-  aforism = models.CharField(max_length=100)
+  aforism = models.CharField(max_length=500)
   author = models.CharField(max_length=50)
   image = models.ImageField(upload_to='blog/')
 
@@ -111,6 +114,13 @@ class Blog(BaseModel):
   def format_created_at(self):
     return self.created_at.strftime('%d-%B-%Y')
   
+  def save(self, *args, **kwargs):
+
+    if not self.slug or self.slug != self.title.lower():
+      self.slug = replace_letter(self.title.lower())
+
+    return super(Blog, self).save(*args, **kwargs)
+
 
 class ContactUs(BaseModel):
   name = models.CharField(max_length=50)
@@ -144,3 +154,16 @@ class Setting(BaseModel):
   class Meta:
     verbose_name = ("Setting")
     verbose_name_plural = ("Setting")
+
+
+class Contact(BaseModel):
+  name = models.CharField(max_length=50)
+  email = models.EmailField()
+  message = models.TextField()
+
+  class Meta:
+    verbose_name = ("Contact")
+    verbose_name_plural = ("Contact")
+  
+  def __str__(self):
+    return self.name

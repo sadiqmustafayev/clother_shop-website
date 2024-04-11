@@ -38,16 +38,18 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="contact__form">
-                        <form action="#">
+                        <form method="post">
+                            {% csrf_token %}
+                            
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Name">
+                                    {{contact_form.name}}
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Email">
+                                    {{contact_form.email}}
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea placeholder="Message"></textarea>
+                                    {{contact_form.message}}
                                     <button type="submit" class="site-btn">Send Message</button>
                                 </div>
                             </div>

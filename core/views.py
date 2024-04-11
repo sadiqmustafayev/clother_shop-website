@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from core.forms import ContactUsForm
 from core.models import *
 
 def index(request):
@@ -15,19 +16,22 @@ def about(request):
   return render(request, 'about.html', context=context)
 
 def blog(request):
+  blogs = Blog.objects.filter(is_active=True).order_by("-created_at")
   context = {
     'title' : 'Blog Page',
-    'blogs' : Blog.objects.filter(is_active=True).order_by("-created_at"),
+    'blogs' : blogs,
+    'blog_count' : blogs.count()
   }
   return render(request, 'blog.html', context=context)
 
-def blog_details(request, blog_id):
-  blog = Blog.objects.get(id=blog_id)
+def blog_details(request, blog_slug):
+  blog = Blog.objects.get(slug = blog_slug)
   context = {
     'title' : blog.title,
     'blog' : blog
   }
   return render(request, 'blog-details.html', context=context)
+
 
 def checkout(request):
   context = {
@@ -38,6 +42,7 @@ def checkout(request):
 def contact_us(request):
   context = {
     'title' : 'Contact Us',
+    'contact_form' : ContactUsForm(),
     'contact_us' : ContactUs.objects.filter(is_active=True).order_by("-created_at")
   }
   return render(request, 'contact_us.html', context=context)
@@ -59,3 +64,4 @@ def shopping_cart(request):
     'title' : 'Shopping Cart',
    }
   return render(request, 'shopping-cart.html', context=context)
+
