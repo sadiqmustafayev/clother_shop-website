@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from core.forms import ContactUsForm
+from core.forms import ContactForm
 from core.models import *
 
 def index(request):
@@ -40,9 +40,15 @@ def checkout(request):
   return render(request, 'checkout.html', context=context)
 
 def contact_us(request):
+  if request.method == 'POST':
+    form = ContactForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return render(request, 'contact_us.html', context={'contact_form': ContactForm()})
+
   context = {
     'title' : 'Contact Us',
-    'contact_form' : ContactUsForm(),
+    'contact_form' : ContactForm(),
     'contact_us' : ContactUs.objects.filter(is_active=True).order_by("-created_at")
   }
   return render(request, 'contact_us.html', context=context)

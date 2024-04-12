@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from core.utills.replace_letter import replace_letter
+from django.utils.translation import gettext as _
+
 
 
 SIZE = (
@@ -30,8 +32,8 @@ class Category(BaseModel):
     return self.name
   
   class Meta:
-    verbose_name = ("Category")
-    verbose_name_plural = ("Category")
+    verbose_name = _("Category")
+    verbose_name_plural = _("Category")
 
 
 class Currency(models.Model):
@@ -43,16 +45,16 @@ class Currency(models.Model):
         return self.code  
     
     class Meta:
-      verbose_name = ("Currency")
-      verbose_name_plural = ("Currency")
+      verbose_name = _("Currency")
+      verbose_name_plural = _("Currency")
 
 
 class Color(BaseModel):
   name = models.CharField(max_length=50)
 
   class Meta:
-    verbose_name = ("Color")
-    verbose_name_plural = ("Color")
+    verbose_name = _("Color")
+    verbose_name_plural = _("Color")
 
   def __str__(self):
     return self.name
@@ -62,8 +64,8 @@ class Size(models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
-      verbose_name = ("Size")
-      verbose_name_plural = ("Size")
+      verbose_name = _("Size")
+      verbose_name_plural = _("Size")
 
     def __str__(self):
         return self.name
@@ -83,8 +85,8 @@ class Product(BaseModel):
     return self.name 
 
   class Meta:
-    verbose_name = ("Product")
-    verbose_name_plural = ("Product")
+    verbose_name = _("Product")
+    verbose_name_plural = _("Product")
 
   def name_and_price(self):
     return f'{self.name} - {self.price} AZN'
@@ -108,8 +110,8 @@ class Blog(BaseModel):
     return self.title
 
   class Meta:
-    verbose_name = ("Blog")
-    verbose_name_plural = ("Blog")
+    verbose_name = _("Blog")
+    verbose_name_plural = _("Blog")
 
   def format_created_at(self):
     return self.created_at.strftime('%d-%B-%Y')
@@ -131,8 +133,8 @@ class ContactUs(BaseModel):
     return self.name
 
   class Meta:
-    verbose_name = ("Contact Us")
-    verbose_name_plural = ("Contact Us")
+    verbose_name = _("Contact Us")
+    verbose_name_plural = _("Contact Us")
 
 
 class Setting(BaseModel):
@@ -152,8 +154,8 @@ class Setting(BaseModel):
 
 
   class Meta:
-    verbose_name = ("Setting")
-    verbose_name_plural = ("Setting")
+    verbose_name = _("Setting")
+    verbose_name_plural = _("Setting")
 
 
 class Contact(BaseModel):
@@ -162,8 +164,8 @@ class Contact(BaseModel):
   message = models.TextField()
 
   class Meta:
-    verbose_name = ("Contact")
-    verbose_name_plural = ("Contact")
+    verbose_name = _("Contact")
+    verbose_name_plural = _("Contact")
   
   def __str__(self):
     return self.name

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block title %}
     {{ title }}
@@ -14,11 +15,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Check Out</h4>
+                        <h4>{% trans 'Check Out' %}</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
-                            <span>Check Out</span>
+                            <a href="{% url 'home' %}">Home</a>
+                            <a href="{% url 'shop' %}">Shop</a>
+                            <span>{% trans 'Check Out' %}</span>
                         </div>
                     </div>
                 </div>

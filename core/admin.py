@@ -3,10 +3,15 @@ from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from core.models import *
+from modeltranslation.admin import TranslationAdmin
+
 
 
 admin.site.site_header = 'MaleFashion Admin'
 
+# class ImageInline(admin.TabularInline):
+#     model = ProductImage
+#     extra = 1
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'category_name', 'size_names', 'currency', 'get_discount_price') 
@@ -14,6 +19,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('category', 'color')
     readonly_fields = ('like',)
     fields = ('name', 'price', 'category', 'color', 'size', 'currency', 'like', 'is_active')
+    # ordering  = ('-created_at')
+    # inlines = [ImageInline]
     
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
@@ -47,12 +54,12 @@ class ProductAdmin(admin.ModelAdmin):
     size_names.short_description = "Sizes"
     category_name.short_description = "Category"
 
-class BlogAdmin(admin.ModelAdmin):
+class BlogAdmin(TranslationAdmin):
     list_display = ('title', 'created_at')
     search_fields = ('title', 'desription')
     list_filter = ('created_at',)
     fields = ('title', 'desription', 'image', 'aforism', 'author', 'is_active')
-    ordering = ('-created_at',)
+    ordering = ('-created_at', 'is_active',)
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Blog, BlogAdmin)
