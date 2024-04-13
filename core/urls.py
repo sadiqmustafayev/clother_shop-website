@@ -8,7 +8,8 @@ from core.views import (
   contact_us,
   shop_details,
   shop,
-  shopping_cart
+  shopping_cart,
+  faq,  
 )
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
     path('shop-details/', shop_details, name='shop_details'),
     path('shop/', shop, name='shop'),
     path('shopping-cart/', shopping_cart, name='shopping_cart'),
+    path('faq/', faq, name='faq'),
 ]

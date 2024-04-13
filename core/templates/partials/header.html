@@ -1,5 +1,6 @@
 
 {% load static %}
+{% load i18n %}
 
     <!-- Page Preloder -->
     <div id="preloder">
@@ -35,6 +36,22 @@
         <p>Free shipping, 30-day return or refund guarantee.</p>
     </div>
 </div>
+<form id="languageForm" action="{% url 'set_language' %}" method="post" style="display: block;">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <select style="width: 150px; height: 40px; border-radius: 20px; border: 1px solid #ccc; color: #555; font-size: 16px; background-color: #f9f9f9; padding: 5px;" name="language" onchange="this.form.submit()">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+        <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+            {{ language.name_local }}
+        </option>
+        {% endfor %}
+    </select>
+</form>
+
+
 <!-- Offcanvas Menu End -->
 
 <!-- Header Section Begin -->
@@ -50,8 +67,9 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Sign in</a>
-                            <a href="#">FAQs</a>
+                            <a href="{% url 'login' %}">Sign In</a>
+                            <a href="{% url 'register' %}">Sign Up</a>
+                            <a href="{% url 'faq' %}">FAQs</a>
                         </div>
                         <div class="header__top__hover">
                             <span>Usd <i class="arrow_carrot-down"></i></span>
@@ -76,18 +94,18 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="{% url 'shop' %}">Shop</a></li>
-                        <li><a href="#">Pages</a>
+                        <li class="active"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                        <li><a href="{% url 'shop' %}">{% trans 'Shop' %}</a></li>
+                        <li><a href="#">{% trans 'Pages' %}</a>
                             <ul class="dropdown">
-                                <li><a href="{% url 'about' %}">About Us</a></li>
-                                <li><a href="{% url 'shop_details' %}">Shop Details</a></li>
-                                <li><a href="{% url 'shopping_cart' %}">Shopping Cart</a></li>
-                                <li><a href="{% url 'checkout' %}">Check Out</a></li>
+                                <li><a href="{% url 'about' %}">{% trans 'About Us' %}</a></li>
+                                <li><a href="{% url 'shop_details' %}">{% trans 'Shop Details' %}</a></li>
+                                <li><a href="{% url 'shopping_cart' %}">{% trans 'Shopping Cart' %}</a></li>
+                                <li><a href="{% url 'checkout' %}">{% trans 'Check Out' %}</a></li>
                             </ul>
                         </li>
-                        <li><a href="{% url 'blog' %}">Blog</a></li>
-                        <li><a href="{% url 'contact_us' %}">Contacts</a></li>
+                        <li><a href="{% url 'blog' %}">{% trans 'Blog' %}</a></li>
+                        <li><a href="{% url 'contact_us' %}">{% trans 'Contact' %}</a></li>
                     </ul>
                 </nav>
             </div>

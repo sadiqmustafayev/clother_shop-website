@@ -71,3 +71,11 @@ def shopping_cart(request):
    }
   return render(request, 'shopping-cart.html', context=context)
 
+def faq(request):
+  context = {
+    'faqs' : FAQ.objects.filter(is_active=True)
+   }
+  return render(request, 'faq.html', context=context)
+  
+
+  

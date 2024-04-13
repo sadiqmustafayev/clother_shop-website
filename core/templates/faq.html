@@ -1,0 +1,64 @@
+<!-- FAQ -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- FAQ Section Begin -->
+<section class="faq-section spad">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="faq__text">
+                  <h2>Frequently Asked Questions</h2>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="accordion" id="accordionExample">
+                  {% for faq in faqs %}
+                  <div class="card">
+                      <div class="card-header" id="heading{{ forloop.counter }}">
+                          <h5 class="mb-0">
+                              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                                  {{ faq.question }}
+                              </button>
+                          </h5>
+                      </div>
+
+                      <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionExample">
+                          <div class="card-body">
+                              {{ faq.answer|safe }}
+                          </div>
+                      </div>
+                  </div>
+                  {% endfor %}
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<!-- FAQ Section End -->
+
+<script>
+  // Bu JavaScript kodu, Bootstrap accordion'ın davranışını özelleştirir.
+  document.addEventListener("DOMContentLoaded", function () {
+      var collapseElements = document.querySelectorAll('.collapse');
+
+      collapseElements.forEach(function (collapseEl) {
+          collapseEl.addEventListener('show.bs.collapse', function () {
+              // Tüm collapse'ları kapatır
+              collapseElements.forEach(function (el) {
+                  if (el !== collapseEl) {
+                      el.classList.remove('show');
+                  }
+              });
+          });
+      });
+  });
+</script>
+
+
+
+{% endblock %}

@@ -59,3 +59,9 @@ msgstr "Азербайджанский"
 #: malefashion/settings.py:126
 msgid "Russian"
 msgstr "Русский"
+
+msgid "Shop"
+msgstr "Магазин"
+
+msgid "Pages"
+msgstr "Cтраницы"

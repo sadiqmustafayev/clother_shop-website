@@ -169,3 +169,15 @@ class Contact(BaseModel):
   
   def __str__(self):
     return self.name
+  
+
+class FAQ(BaseModel):
+  question = models.CharField(max_length=100)
+  answer = models.TextField()
+
+  class Meta:
+    verbose_name = _("FAQ")
+    verbose_name_plural = _("FAQs")
+  
+  def __str__(self):
+    return self.question

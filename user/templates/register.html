@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+{% load i18n %}
+<body>
+    <main>
+       
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="login-wrapper">
+                            <div class="section-title text-lg-start">
+                                <h2 class="title wow animate__animated animate__fadeInUp animate__delay-0">
+                                    <br>
+                                </h2>
+                            </div>
+
+                            <div class="login-or">
+                                <hr>
+                                <span>{% trans 'or' %}</span>
+                            </div>
+                            <form method="POST" action="#"> 
+                                {% csrf_token %}
+                                {% if form.errors %}
+                                <div>
+                                    {% for field in form %}
+                                    {% for error in field.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if form.password1.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.password1.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if form.password2.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.password2.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                
+                                {{ form.username.label_tag }} {{ form.username }}
+                                {{ form.email.label_tag }} {{ form.email }}
+                                {{ form.first_name.label_tag }} {{ form.first_name }}
+                                {{ form.last_name.label_tag }} {{ form.last_name }}
+                                {{ form.password1.label_tag }} {{ form.password1 }}
+                                {{ form.password2.label_tag }} {{ form.password2 }}
+                                {{ form.phone_number.label_tag }} {{ form.phone_number }}
+                                {{ form.address.label_tag }} {{ form.address }}
+                                {{ form.country.label_tag }} {{ form.country }}
+                                {{ form.city.label_tag }} {{ form.city }}
+                                {{ form.zip_code.label_tag }} {{ form.zip_code }}
+                                {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
+                                
+                                <div class="section-title text-center text-lg-start mt-5 mt-lg-0" data-cues="slideInRight" data-delay="50">
+                                    <div class="form-group"></div>
+                                </div>
+                                <button type="submit" class="btn btn-blue btn-xl btn-round mt-5">{% trans 'Register' %}</button>
+                            </form>
+                            <img class="shape1" src="{% static 'assets/img/login/Graphic3.png' %}" alt="">
+                            <img class="shape2" src="{% static 'assets/img/login/Graphic4.png' %}" alt="">
+                            <img class="shape3" src="{% static 'assets/img/login/Graphic.png' %}" alt="">
+                            <img class="shape4" src="{% static 'assets/img/login/Graphic2.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+{% endblock %}
