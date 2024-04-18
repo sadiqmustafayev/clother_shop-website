@@ -1,79 +1,139 @@
-{% extends 'index.html' %}
+{% extends 'base.html' %}
 {% load static %}
-{% block content %}
 {% load i18n %}
-<body>
-    <main>
-       
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="login-wrapper">
-                            <div class="section-title text-lg-start">
-                                <h2 class="title wow animate__animated animate__fadeInUp animate__delay-0">
-                                    <br>
-                                </h2>
-                            </div>
+{{ form.field_name }} 
+{% block content %}
 
-                            <div class="login-or">
-                                <hr>
-                                <span>{% trans 'or' %}</span>
-                            </div>
-                            <form method="POST" action="#"> 
-                                {% csrf_token %}
-                                {% if form.errors %}
-                                <div>
-                                    {% for field in form %}
-                                    {% for error in field.errors %}
-                                    <div class="invalid-feedback">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                                {% if form.password1.errors %}
-                                <div class="alert alert-danger">
-                                    {% for error in form.password1.errors %}
-                                    {{ error }}
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                                {% if form.password2.errors %}
-                                <div class="alert alert-danger">
-                                    {% for error in form.password2.errors %}
-                                    {{ error }}
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                                
-                                {{ form.username.label_tag }} {{ form.username }}
-                                {{ form.email.label_tag }} {{ form.email }}
-                                {{ form.first_name.label_tag }} {{ form.first_name }}
-                                {{ form.last_name.label_tag }} {{ form.last_name }}
-                                {{ form.password1.label_tag }} {{ form.password1 }}
-                                {{ form.password2.label_tag }} {{ form.password2 }}
-                                {{ form.phone_number.label_tag }} {{ form.phone_number }}
-                                {{ form.address.label_tag }} {{ form.address }}
-                                {{ form.country.label_tag }} {{ form.country }}
-                                {{ form.city.label_tag }} {{ form.city }}
-                                {{ form.zip_code.label_tag }} {{ form.zip_code }}
-                                {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
-                                
-                                <div class="section-title text-center text-lg-start mt-5 mt-lg-0" data-cues="slideInRight" data-delay="50">
-                                    <div class="form-group"></div>
-                                </div>
-                                <button type="submit" class="btn btn-blue btn-xl btn-round mt-5">{% trans 'Register' %}</button>
-                            </form>
-                            <img class="shape1" src="{% static 'assets/img/login/Graphic3.png' %}" alt="">
-                            <img class="shape2" src="{% static 'assets/img/login/Graphic4.png' %}" alt="">
-                            <img class="shape3" src="{% static 'assets/img/login/Graphic.png' %}" alt="">
-                            <img class="shape4" src="{% static 'assets/img/login/Graphic2.png' %}" alt="">
-                        </div>
-                    </div>
+<style>
+    /* styles.css */
+/* Container */
+.container {
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* Registration Form */
+.registration-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Inputs and Select */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Button */
+button {
+    padding: 15px 30px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+</style>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3"> 
+        <div class="registration-form" style="margin-bottom: 40px;">
+            <h2>Register</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    {{ form.first_name }}
                 </div>
-            </div>
-        </section>
-    </main>
-</body>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone Number</label>
+                    {{ form.phone_number }}
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    {{ form.country }}
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    {{ form.city }}
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    {{ form.address }}
+                </div>
+                <div class="form-group">
+                    <label for="id_zip_code">Zip Code</label>
+                    {{ form.zip_code }}
+                </div>
+                <div class="form-group">
+                    <label for="date_of_birth">Date Of Birth</label>
+                    {{ form.date_of_birth }}
+                </div>
+                <div class="form-group">
+                    <label for="password1">Password</label>
+                    {{ form.password1 }}
+                </div>
+                <div class="form-group">
+                    <label for="password2">Confirm Password</label>
+                    {{ form.password2 }}
+                </div>
+                <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Register</button>
+            
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
 {% endblock %}

@@ -10,7 +10,7 @@ from phonenumber_field.formfields import PhoneNumberField
 from .models import MyUser
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-
+from django.core.validators import RegexValidator
 
 #registration form
 class UserForm(UserCreationForm):
@@ -41,6 +41,71 @@ class UserForm(UserCreationForm):
         'pattern': '[A-Za-z]+',
         'title': _('Only alphabetical characters are allowed.')
       }))
+  
+  
+
+  phone_number = PhoneNumberField(
+    label=(''),
+    widget=forms.TextInput(attrs={
+      'class': 'form-control',
+      'placeholder': _('Phone Number')
+    }))
+
+
+  
+  country = forms.CharField(
+    max_length=50,  
+    widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': _('Country'),
+            'title': _('Please enter your country.')
+        }
+    )
+)
+  city = forms.CharField(
+    max_length=50,  # Şehir adının uzunluğunu ihtiyaca göre ayarlayabilirsiniz.
+    widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': _('City'),
+            'title': _('Please enter your city.')
+        }
+    )
+)
+
+  address = forms.CharField(
+    max_length=100,  # Adresin maksimum uzunluğunu ihtiyaca göre ayarlayabilirsiniz.
+    widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': _('Address'),
+            'title': _('Please enter your address.')
+        }
+    )
+)
+  
+  zip_code = forms.CharField(
+    max_length=20,  # Posta kodunun maksimum uzunluğunu ihtiyaca göre ayarlayabilirsiniz.
+    widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': _('Zip Code'),
+            
+            'title': _('Please enter a valid zip code.')
+        }
+    )
+)
+  
+  date_of_birth = forms.DateField(
+    widget=forms.DateInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': _('Date of Birth'),
+            'type': 'date'
+        }
+    )
+)
 
   password1 = forms.CharField(
     strip=False,
@@ -63,18 +128,18 @@ class UserForm(UserCreationForm):
   class Meta:
     model = MyUser
     fields = [
-      'username',
-      'email',
       'first_name',
       'last_name',
-      'password1',
-      'password2',
+      'username',
+      'email',
       'phone_number', 
-      'address',
       'country',
       'city', 
+      'address',
       'zip_code', 
       'date_of_birth',
+      'password1',
+      'password2',
     ]
     labels = {
     'password2': 'Writer',

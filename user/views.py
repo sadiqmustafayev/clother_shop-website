@@ -19,12 +19,15 @@ def register(request):
   if request.method == 'POST':
     form = UserForm(request.POST)
     if form.is_valid():
-      user = form.save()
-      username = form.cleaned_data.get('username')
-      password = form.cleaned_data.get('password1')
-      user = authenticate(username=username, password=password)
-      login(request, user)
-      return redirect('home')
+        user = form.save()
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect('login')
+    else:
+        print(form.errors)
+
   context = {
     'setting': Setting.objects.first(),
     'title': "Register",

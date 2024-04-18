@@ -30,7 +30,6 @@
             var mixer = mixitup(containerEl);
         }
     });
-    
 
     /*------------------
         Background Set
@@ -215,4 +214,3 @@
     });
 
 })(jQuery);
-

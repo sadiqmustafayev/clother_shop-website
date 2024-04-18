@@ -21,7 +21,7 @@ from core.urls import urlpatterns as core_urls
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
-from user.urls import urlpatterns as user_urlpatterns
+from user.urls import urlpatterns as user_url
 
 
 
@@ -35,7 +35,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
   path('admin/', admin.site.urls),
   path('', include(core_urls)),
-  path('user/', include(user_urlpatterns)),
+  path('user/', include(user_url)),
   path('i18n/', include('django.conf.urls.i18n')),
 )
 
