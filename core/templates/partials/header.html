@@ -1,9 +1,8 @@
-
 {% load static %}
 {% load i18n %}
 
- <!-- Page Preloder -->
- <div id="preloder">
+<!-- Page Preloder -->
+<div id="preloder">
     <div class="loader"></div>
 </div>
 
@@ -12,11 +11,11 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="#">Sign in</a>
-            <a href="#">FAQs</a>
+            <a href="{% url 'login' %}">{% trans 'Sign in' %}</a>
+            <a href="{% url 'faq' %}">{% trans 'FAQs' %}</a>
         </div>
         <div class="offcanvas__top__hover">
-            <span>Usd <i class="arrow_carrot-down"></i></span>
+            <span>USD <i class="arrow_carrot-down"></i></span>
             <ul>
                 <li>USD</li>
                 <li>EUR</li>
@@ -63,15 +62,29 @@
                         <p>Free shipping, 30-day return or refund guarantee.</p>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-5">
+                <div class="col-lg-6 col-md-7">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="{% url 'login' %}">Sign In</a>
-                            <a href="{% url 'register' %}">Sign Up</a>
-                            <a href="{% url 'faq' %}">FAQs</a>
+                            {% if user.is_authenticated %}
+                                <li class="nav-item menu-dropdown black-text">
+                                    <a class="nav-link">{% trans 'Account' %}</a>
+                                    <ul class="sub-menu">
+                                        <form method="POST" action="{% url 'logout' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="nav-link btn btn-link text-black ">{% trans 'Logout' %}</button>
+                                        </form>
+                                        <li><a class="nav-link" href="{% url 'profile_edit' %}" style="color:black;">{% trans 'Profile' %}</a></li>                                          
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <a href="{% url 'login' %}">{% trans 'Sign In' %}</a>
+                                <a href="{% url 'register' %}">{% trans 'Sign Up' %}</a>
+                            {% endif %}
+                            <a href="{% url 'faq' %}">{% trans 'FAQs' %}</a>
                         </div>
+
                         <div class="header__top__hover">
-                            <span>Usd <i class="arrow_carrot-down"></i></span>
+                            <span>USD <i class="arrow_carrot-down"></i></span>
                             <ul>
                                 <li>USD</li>
                                 <li>EUR</li>

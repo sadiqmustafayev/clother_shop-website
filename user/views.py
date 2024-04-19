@@ -39,22 +39,27 @@ def register(request):
 
 
 def login_view(request):
-  context = {'setting': Setting.objects.first(), 'title': "Login"}
+    context = {'setting': Setting.objects.first(), 'title': "Login"}
 
-  if request.method == 'POST':
-    form = LoginForm(request=request, data=request.POST)
-    if form.is_valid():
-      username = form.cleaned_data.get('username')
-      password = form.cleaned_data.get('password')
-      user = authenticate(username=username, password=password)
-      if user is not None:
-        login(request, user)
-        return redirect('home')
-  else:
-    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request=request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            if username and password:  
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('home')
+                else:
+                    context['error'] = 'Username or Password is incorrect'
+            else:
+                context['error'] = 'Please enter both username and password'
+    else:
+        form = LoginForm()
 
-  context['form'] = form
-  return render(request, 'login.html', context)
+    context['form'] = form
+    return render(request, 'login.html', context)
 
 
 

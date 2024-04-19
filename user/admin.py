@@ -12,7 +12,7 @@ class MyUserAdmin(UserAdmin):
         'date_joined',
     )
     list_filter = (
-        'city',  # 'location' yerine 'city' kullanıldı
+        'city',  
         'date_of_birth',
         'is_staff',
         'is_active',

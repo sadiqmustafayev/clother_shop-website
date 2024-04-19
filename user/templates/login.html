@@ -2,101 +2,36 @@
 {% load static %}
 {% load i18n %}
 {{ form.field_name }} 
+
+
+
+{% block title %} Registration Form {% endblock %}
 {% block content %}
-
-<style>
-    /* styles.css */
-/* Container */
-.container {
-    margin: 0 auto;
-    padding: 10px;
-}
-
-/* Registration Form */
-.registration-form {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Form Group */
-.form-group {
-    margin-bottom: 20px;
-}
-
-/* Labels */
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-/* Inputs and Select */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: border-color 0.3s ease-in-out;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-select:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-/* Button */
-button {
-    padding: 15px 30px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-</style>
-
 
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3"> 
         <div class="registration-form" style="margin-bottom: 40px;">
-            <h2>Login</h2>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" class="registration-form">
                 {% csrf_token %}
-             
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    {{ form.username }}
+                {{ error }}
+                <h2 class="form-title"> Login Form </h2><br>
+                <div class="form-fields">
+                   {% for field in form %}
                 </div>
                 
                 <div class="form-group">
-                    <label for="password1">Password</label>
-                    {{ form.password }}
+                    {{ field.label_tag }}
+                    {{ field }}
                 </div>
-               
+               {% endfor %}
                 <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Login</button>
-            
+                
             </form>
         </div>
     </div>
 </div>
 </div>
 
-
-
-
 {% endblock %}
+<!-- <a class="btn btn-primary social-button" href="{% url 'social:begin' 'google-oauth2' %}" style="margin-bottom: 10px; display: block;">Login with Google</a> -->
