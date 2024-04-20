@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user',
     'rosetta',
     'phonenumber_field',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

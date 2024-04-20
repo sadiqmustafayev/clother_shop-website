@@ -115,12 +115,10 @@ class Blog(BaseModel):
 
   def format_created_at(self):
     return self.created_at.strftime('%d-%B-%Y')
-  
+
   def save(self, *args, **kwargs):
-
     if not self.slug or self.slug != self.title.lower():
-      self.slug = replace_letter(self.title.lower())
-
+        self.slug = replace_letter(self.title.lower())
     return super(Blog, self).save(*args, **kwargs)
 
 

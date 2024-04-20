@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 # from django.urls.conf import include 
 from core.urls import urlpatterns as core_urls
+from user.urls import urlpatterns as user_url
+from api.urls import urlpatterns as api_urls
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
-from user.urls import urlpatterns as user_url
 
 
 
@@ -30,12 +31,14 @@ from user.urls import urlpatterns as user_url
 urlpatterns = [
     # path('admin/', admin.site.urls),
     # path('', include(core_urls)),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 urlpatterns += i18n_patterns(
   path('admin/', admin.site.urls),
   path('', include(core_urls)),
   path('user/', include(user_url)),
+  path('api/', include(api_urls)),
   path('i18n/', include('django.conf.urls.i18n')),
 )
 

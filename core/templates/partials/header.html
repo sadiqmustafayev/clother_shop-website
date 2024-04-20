@@ -62,10 +62,10 @@
                         <p>Free shipping, 30-day return or refund guarantee.</p>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-7">
+                <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            {% if user.is_authenticated %}
+                            {% if user.is_authenticated %}   
                                 <li class="nav-item menu-dropdown black-text">
                                     <a class="nav-link">{% trans 'Account' %}</a>
                                     <ul class="sub-menu">
@@ -82,6 +82,7 @@
                             {% endif %}
                             <a href="{% url 'faq' %}">{% trans 'FAQs' %}</a>
                         </div>
+                        
 
                         <div class="header__top__hover">
                             <span>USD <i class="arrow_carrot-down"></i></span>
