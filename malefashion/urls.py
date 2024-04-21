@@ -31,7 +31,6 @@ from django.conf.urls.i18n import i18n_patterns
 urlpatterns = [
     # path('admin/', admin.site.urls),
     # path('', include(core_urls)),
-    path('api-auth/', include('rest_framework.urls')),
 ]
 
 urlpatterns += i18n_patterns(
@@ -39,6 +38,7 @@ urlpatterns += i18n_patterns(
   path('', include(core_urls)),
   path('user/', include(user_url)),
   path('api/', include(api_urls)),
+  path('api-auth/', include('rest_framework.urls')),
   path('i18n/', include('django.conf.urls.i18n')),
 )
 

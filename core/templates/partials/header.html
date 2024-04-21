@@ -34,6 +34,7 @@
         <p>Free shipping, 30-day return or refund guarantee.</p>
     </div>
 </div>
+
 <form id="languageForm" action="{% url 'set_language' %}" method="post" style="display: block;">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ request.path }}">
@@ -48,8 +49,6 @@
         {% endfor %}
     </select>
 </form>
-
-
 <!-- Offcanvas Menu End -->
 
 <!-- Header Section Begin -->
@@ -65,15 +64,15 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            {% if user.is_authenticated %}   
+                            {% if user.is_authenticated %}
                                 <li class="nav-item menu-dropdown black-text">
                                     <a class="nav-link">{% trans 'Account' %}</a>
                                     <ul class="sub-menu">
-                                        <form method="POST" action="{% url 'logout' %}">
+                                        <li><a class="nav-link" href="{% url 'profile_edit' %}" style="color:black;">{% trans 'Profile' %}</a></li>
+                                        <li><form method="POST" action="{% url 'logout' %}">
                                             {% csrf_token %}
                                             <button type="submit" class="nav-link btn btn-link text-black ">{% trans 'Logout' %}</button>
-                                        </form>
-                                        <li><a class="nav-link" href="{% url 'profile_edit' %}" style="color:black;">{% trans 'Profile' %}</a></li>                                          
+                                        </form></li>                                          
                                     </ul>
                                 </li>
                             {% else %}
@@ -82,8 +81,6 @@
                             {% endif %}
                             <a href="{% url 'faq' %}">{% trans 'FAQs' %}</a>
                         </div>
-                        
-
                         <div class="header__top__hover">
                             <span>USD <i class="arrow_carrot-down"></i></span>
                             <ul>
