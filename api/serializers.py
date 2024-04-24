@@ -11,5 +11,6 @@ class BlogSerializer(serializers.ModelSerializer):
   def to_representation(self, instance):
     data = super().to_representation(instance)
     data['image'] = instance.image.url
+    data['created_at'] = instance.created_at.strftime('%d-%m-%Y')
     return data
   

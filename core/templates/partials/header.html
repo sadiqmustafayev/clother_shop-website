@@ -65,14 +65,17 @@
                     <div class="header__top__right">
                         <div class="header__top__links">
                             {% if user.is_authenticated %}
-                                <li class="nav-item menu-dropdown black-text">
-                                    <a class="nav-link">{% trans 'Account' %}</a>
-                                    <ul class="sub-menu">
-                                        <li><a class="nav-link" href="{% url 'profile_edit' %}" style="color:black;">{% trans 'Profile' %}</a></li>
-                                        <li><form method="POST" action="{% url 'logout' %}">
+                            <li class="nav-item menu-dropdown black-text">
+                                <ul class="sub-menu">
+                                    <li><a class="nav-link" href="{% url 'profile_edit' %}" style="color: #fff;">{% trans 'Profile' %}</a></li>
+                                    <li>
+                                        <form method="POST" action="{% url 'logout' %}">
                                             {% csrf_token %}
-                                            <button type="submit" class="nav-link btn btn-link text-black ">{% trans 'Logout' %}</button>
-                                        </form></li>                                          
+                                            <button type="submit" class="btn btn-link text-black">{% trans 'Logout' %}</button>
+                                        </form>
+                                    </li>                                          
+                                </ul>
+                            </li>                                        
                                     </ul>
                                 </li>
                             {% else %}

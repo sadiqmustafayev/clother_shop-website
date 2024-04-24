@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.i18n import set_language
 from core.views import (
   index,
   about,
@@ -9,7 +10,7 @@ from core.views import (
   shop_details,
   shop,
   shopping_cart,
-  faq,  
+  faq,
 )
 
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path('shop/', shop, name='shop'),
     path('shopping-cart/', shopping_cart, name='shopping_cart'),
     path('faq/', faq, name='faq'),
+    path('set-language/', set_language, name='set_language'),
 ]
