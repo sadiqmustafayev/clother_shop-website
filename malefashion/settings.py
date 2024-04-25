@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rosetta',
     'phonenumber_field',
     'rest_framework',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -168,3 +169,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user.MyUser'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    
+)
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '798352641408-bg3hfqe0qqc6fctq9uigag5614r6qi78.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+LOGIN_URL = '/auth/login/google-oauth2/'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1089792098971103'     
+SOCIAL_AUTH_FACEBOOK_SECRET = '0f4b7cd2b7a5e663f77b785b2ae7acd1'

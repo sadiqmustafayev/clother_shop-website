@@ -3,11 +3,8 @@
 {% load i18n %}
 {{ form.field_name }} 
 
-
-
 {% block title %} Registration Form {% endblock %}
 {% block content %}
-
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3"> 
@@ -15,23 +12,32 @@
             <form method="post" enctype="multipart/form-data" class="registration-form">
                 {% csrf_token %}
                 {{ error }}
+                <hr>
+                <!-- Social Login Buttons -->
+                <div style="display: flex; justify-content: center;">
+                    <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger" style="margin-right: 10px;">
+                        <i class="fab fa-google"></i> Login with Google
+                    </a>
+                    
+                    <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary">
+                        <i class="fab fa-facebook"></i> Login with Facebook
+                    </a>
+                </div>
+                <br>
                 <h2 class="form-title"> Login Form </h2><br>
                 <div class="form-fields">
-                   {% for field in form %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
                 </div>
-                
-                <div class="form-group">
-                    {{ field.label_tag }}
-                    {{ field }}
-                </div>
-               {% endfor %}
                 <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Login</button>
-                
             </form>
+           
         </div>
     </div>
 </div>
 </div>
-
 {% endblock %}
-<!-- <a class="btn btn-primary social-button" href="{% url 'social:begin' 'google-oauth2' %}" style="margin-bottom: 10px; display: block;">Login with Google</a> -->

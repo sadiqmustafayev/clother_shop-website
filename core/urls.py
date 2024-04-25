@@ -1,3 +1,4 @@
+from django.urls import include
 from django.urls import path
 from django.views.i18n import set_language
 from core.views import (
@@ -26,4 +27,5 @@ urlpatterns = [
     path('shopping-cart/', shopping_cart, name='shopping_cart'),
     path('faq/', faq, name='faq'),
     path('set-language/', set_language, name='set_language'),
+    path('', include('social_django.urls', namespace='social')),
 ]
