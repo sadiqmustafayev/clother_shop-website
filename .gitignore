@@ -28,5 +28,5 @@ venv*/
 *.swp
 .vscode/
 
-.secrets.json
+# Ignore secrets.json file
 secrets.json
