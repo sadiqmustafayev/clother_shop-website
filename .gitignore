@@ -27,7 +27,3 @@ venv*/
 *~
 *.swp
 .vscode/
-
-
-
-.secrets.json
