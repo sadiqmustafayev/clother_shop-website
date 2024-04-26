@@ -18,8 +18,6 @@ from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j5-z%b4qv=c=1)ysz67=8x3y8%$gs@hz8%c47e1vula(*d7gfb'
 
 
 # Quick-start development settings - unsuitable for production
