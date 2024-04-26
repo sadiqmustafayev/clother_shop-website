@@ -19,7 +19,7 @@ from django.utils.translation import gettext_lazy as _
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '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'
+SECRET_KEY = 'django-insecure-j5-z%b4qv=c=1)ysz67=8x3y8%$gs@hz8%c47e1vula(*d7gfb'
 
 
 # Quick-start development settings - unsuitable for production
@@ -178,9 +178,6 @@ AUTHENTICATION_BACKENDS = (
     
 )
 
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '798352641408-bg3hfqe0qqc6fctq9uigag5614r6qi78.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
 
