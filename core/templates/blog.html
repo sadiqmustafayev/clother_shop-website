@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% load i18n %}
 
 {% block title %}
@@ -8,14 +7,12 @@
 {% endblock %}
 
 {% block content %}
-
-
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-blog set-bg" data-setbg="{% if setting_data %} {{ setting_data.blog_bg_image.url }} {% endif %}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2>{% trans 'Our Blog' %} {{ block_count }}</h2>
+                    <h2>{% trans 'Our Blog' %}</h2>
                 </div>
             </div>
         </div>
@@ -25,24 +22,79 @@
     <!-- Blog Section Begin -->
     <section class="blog spad">
         <div class="container">
+            <div style="display: flex; justify-content: center; align-items: center; height: 10vh;">
+                <form id="search-form" method="post" style="display: flex; align-items: center;">
+                    {% csrf_token %}
+                    <input value="{{ user_input }}" type="text" id="blog_search" name="blog_search" class="form-control" style="width: 300px; margin-right: 10px;" placeholder="Search by blog...">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            
+            <h3 id="search-message" class="text-center">
+                {% if page_obj.object_list.count == 0 %}
+                    {% trans 'Blog not found' %}
+                {% endif %}
+            </h3>
+
             <div class="row">
-                {% for blog in blogs %}
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="{{ blog.image.url }}"></div>
-                        <div class="blog__item__text">
-                            <span><img src="{% static 'img/icon/calendar.png' %}" alt="">{{ blog.format_created_at }}</span>
-                            <h5>{{ blog.title|truncatechars:100|safe }}</h5>
-                            <a href="{% url 'blog-details' blog.slug %}">Read More</a>
+                {% for blog in page_obj %}
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="blog__item">
+                            <div class="blog__item__pic set-bg" data-setbg="{{ blog.image.url }}"></div>
+                            <div class="blog__item__text">
+                                <span><img src="{% static 'img/icon/calendar.png' %}" alt="">{{ blog.format_created_at }}</span>
+                                <h5>{{ blog.title|truncatechars:100|safe }}</h5>
+                                <a href="{% url 'blog-details' blog.slug %}">Read More</a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
+            </div>
 
-
+            <!-- Pagination Links -->
+            <nav class="product__pagination">
+                <div class="product__pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo;</a>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a class="active" href="?page={{ num }}">{{ num }}</a>
+                        {% else %}
+                            <a href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}"> &raquo;</a>
+                    {% endif %}
+                </div>
+            </nav>
+            
+        </div>
     </section>
     <!-- Blog Section End -->
 
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            var searchForm = document.getElementById('search-form');
+            var searchInput = document.getElementById('blog_search');
 
+            searchForm.addEventListener('submit', function(event) {
+                var searchValue = searchInput.value.trim();
+                // En az 3 karakter kontrolü
+                if (searchValue.length < 3) {
+                    event.preventDefault();
+                    alert("Please enter at least 3 characters.");
+                }
+            });
+        });
+    </script>
 
 {% endblock %}

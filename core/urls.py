@@ -2,6 +2,7 @@ from django.urls import include
 from django.urls import path
 from django.views.i18n import set_language
 from core.views import (
+  
   index,
   about,
   blog_details,
@@ -18,6 +19,7 @@ urlpatterns = [
     path('', index, name='home'), 
     path('about/', about, name='about'),
     path('blog/', blog, name='blog'),
+    # path('blog/', BlogListView.as_view(), name='blog'),
     path('blog-details/<str:blog_slug>/', blog_details, name='blog-details'),
     # path('blog-details/<int:blog_id>', blog_details, name='blog_details'),
     path('checkout/', checkout, name='checkout'),

@@ -18,10 +18,13 @@ from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-j5-z%b4qv=c=1)ysz67=8x3y8%$gs@hz8%c47e1vula(*d7gfb'
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -169,3 +172,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user.MyUser'
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    
+)
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '798352641408-bg3hfqe0qqc6fctq9uigag5614r6qi78.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+LOGIN_URL = '/auth/login/google-oauth2/'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1089792098971103'     
+SOCIAL_AUTH_FACEBOOK_SECRET = '0f4b7cd2b7a5e663f77b785b2ae7acd1'
