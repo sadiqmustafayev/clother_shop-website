@@ -1,5 +1,5 @@
 from django import forms
-from core.models import Contact
+from core.models import Contact, ShopComments
 
 
 class ContactForm(forms.ModelForm):
@@ -28,3 +28,17 @@ class ContactForm(forms.ModelForm):
         'placeholder': 'Message'
       })
     }
+
+
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = ShopComments
+        fields = ['name', 'email', 'phone_number', 'comment']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Phone'}),
+            'comment': forms.Textarea(attrs={'placeholder': 'Comment'}),
+        }

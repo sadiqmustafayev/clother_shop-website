@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from core.utills.replace_letter import replace_letter
 from django.utils.translation import gettext as _
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 
@@ -54,7 +55,7 @@ class Color(BaseModel):
 
   class Meta:
     verbose_name = _("Color")
-    verbose_name_plural = _("Color")
+    verbose_name_plural = _("Color") 
 
   def __str__(self):
     return self.name
@@ -69,12 +70,51 @@ class Size(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class ShopImage(models.Model):
+    name = models.CharField(max_length=50)
+    image1 = models.ImageField(upload_to='images/')
+    image2 = models.ImageField(upload_to='images/')
+    image3 = models.ImageField(upload_to='images/')
+
+    class Meta:
+      verbose_name = _("ShopImage")
+      verbose_name_plural = _("ShopImage")
+
+    def __str__(self):
+        return self.name
+    
+
+class ShopComments(BaseModel):
+  name = models.CharField(max_length=50)
+  email = models.EmailField()
+  phone_number = PhoneNumberField(blank=True)
+  comment = models.TextField()
+
+  class Meta:
+    verbose_name = _("ShopComments")
+    verbose_name_plural = _("ShopComments")
+
+
+class ShopCategory(BaseModel):
+  name = models.CharField(max_length=50)
+
+
+  class Meta:
+    verbose_name = _("Shop_Category")
+    verbose_name_plural = _("Shop_Category")
+  
+  def __str__(self):
+    return self.name
 
 
 class Product(BaseModel):
   name = models.CharField(max_length=50)
+  slug = models.SlugField(max_length=100, unique=True)
   price = models.FloatField()
   color = models.ManyToManyField(Color)
+  images = models.ManyToManyField(ShopImage, blank=True)
   # size = models.CharField(max_length=50, choices=SIZE, default='M')
   size = models.ManyToManyField(Size)
   like = models.IntegerField(default=0)
@@ -96,6 +136,11 @@ class Product(BaseModel):
 
   def get_discount_price(self):
     return self.price - (self.price * 0.1)
+  
+  def save(self, *args, **kwargs):
+        if not self.slug or self.slug != self.name.lower():
+            self.slug = replace_letter(self.name.lower())
+        return super(Product, self).save(*args, **kwargs)
 
 
 class Blog(BaseModel):
