@@ -1655,38 +1655,40 @@ ol {
 }
 
 .product__details__option__size {
-	display: inline-block;
-	margin-right: 50px;
+	margin-bottom: 20px;
 }
 
-.product__details__option__size span {
-	color: #111111;
-	display: inline-block;
+.option-label {
 	margin-right: 10px;
 }
 
-.product__details__option__size label {
-	color: #111111;
-	font-size: 15px;
-	font-weight: 700;
-	text-transform: uppercase;
+.option-label::after {
+	content: "Size:";
+}
+
+.size-label {
 	display: inline-block;
-	border: 1px solid #e5e5e5;
-	padding: 6px 15px;
-	margin-bottom: 0;
-	margin-right: 5px;
+	margin-right: 10px;
+	padding: 8px 12px;
+	border: 2px solid #ccc;
+	border-radius: 5px;
 	cursor: pointer;
+	background-color: #f8f9fa; /* Arka plan rengi */
+	color: #495057; /* Yazı rengi */
 }
 
-.product__details__option__size label.active {
-	background: #111111;
-	color: #ffffff;
-	border-color: #111111;
+.size-label:hover {
+	background-color: #e9ecef; /* Hover arka plan rengi */
 }
 
-.product__details__option__size label input {
-	position: absolute;
-	visibility: hidden;
+.size-label input[type="radio"] {
+	display: none;
+}   
+
+.size-label input[type="radio"]:checked + label {
+	background-color: #007bff; /* Seçili arka plan rengi */
+	color: #fff; /* Seçili yazı rengi */
+	border-color: #007bff; /* Seçili kenarlık rengi */
 }
 
 .product__details__option__color {
@@ -3168,11 +3170,16 @@ ol {
 	border: 1px solid #e1e1e1;
 	padding-left: 20px;
 	font-size: 15px;
-	color: #b7b7b7;
+	color: black;
 	margin-bottom: 30px;
 	-webkit-transition: all, 0.3s;
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
+}
+
+.blog__details__comment form input,
+.blog__details__comment form textarea {
+    color: black !important;
 }
 
 .blog__details__comment form input::-webkit-input-placeholder {

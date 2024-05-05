@@ -1,5 +1,5 @@
 from django.urls import include
-from django.urls import path
+from django.urls import path 
 from django.views.i18n import set_language
 from core.views import (
   
@@ -11,6 +11,7 @@ from core.views import (
   contact_us,
   shop_details,
   shop,
+  add_comment,
   shopping_cart,
   faq,
 )
@@ -30,5 +31,9 @@ urlpatterns = [
     path('shopping-cart/', shopping_cart, name='shopping_cart'),
     path('faq/', faq, name='faq'),
     path('set-language/', set_language, name='set_language'),
+    # path('comment_submit/<slug:slug>/', add_comment, name='comment_submit'),
+    # path('add_comment/<slug:shop_slug>/', add_comment, name='add_comment'),
+    # path('shop-details/add_comment/<slug:shop_slug>/', add_comment, name='add_comment'),
+    path('shop-details/<str:shop_slug>/add_comment/', add_comment, name='add_comment'),
     path('', include('social_django.urls', namespace='social')),
 ]

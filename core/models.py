@@ -3,7 +3,7 @@ from django.utils import timezone
 from core.utills.replace_letter import replace_letter
 from django.utils.translation import gettext as _
 from phonenumber_field.modelfields import PhoneNumberField
-
+import uuid
 
 
 SIZE = (
@@ -92,6 +92,11 @@ class ShopComments(BaseModel):
   phone_number = PhoneNumberField(blank=True)
   comment = models.TextField()
 
+  @staticmethod
+  def search_feed(query):
+        return ShopComments.objects.filter(text__icontains=query)
+
+
   class Meta:
     verbose_name = _("ShopComments")
     verbose_name_plural = _("ShopComments")
@@ -118,6 +123,7 @@ class Product(BaseModel):
   # size = models.CharField(max_length=50, choices=SIZE, default='M')
   size = models.ManyToManyField(Size)
   like = models.IntegerField(default=0)
+  rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
   currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True)
   category = models.ForeignKey(Category, on_delete=models.CASCADE)
 

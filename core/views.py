@@ -1,7 +1,10 @@
+# from pyexpat.errors import messages
+from django.contrib import messages
 from django.views.generic import ListView  
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from core.forms import CommentForm, ContactForm
+from core.forms import ShopCommentForm, ContactForm
 from core.models import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
@@ -126,21 +129,28 @@ def shop(request):
         'page_obj': page_obj,  # Paginator'un get_page metodu ile sayfaları alıyoruz
         'products': products,
         'user_input': user_input,
-        'categories': categories, 
+        'categories': categories,
     }
     
     return render(request, 'shop.html', context=context)
 
 
 def shop_details(request, shop_slug):
-  product = Product.objects.get(slug = shop_slug)
+    product = Product.objects.get(slug=shop_slug)
+    form = None  # Boş bir form tanımlıyoruz
 
-  context = {
-    'title' : product.name,
-    'product' : product,
-   }
-  return render(request, 'shop-details.html', context=context)
+    if request.method == 'POST':
+        form = ShopCommentForm(request.POST)
+        if form.is_valid():
+            form.save()  # Yorumu kaydediyoruz
 
+    context = {
+        'title': product.name,
+        'product': product,
+        'form': form,  # Formu context'e ekliyoruz
+    }
+    
+    return render(request, 'shop-details.html', context=context)
 
 def shopping_cart(request):
   context = {
@@ -155,16 +165,20 @@ def faq(request):
   return render(request, 'faq.html', context=context)
   
 
-def shop_add_comment(request):
+@login_required
+def add_comment(request, shop_slug):
+    shop = get_object_or_404(Product, slug=shop_slug)
+
     if request.method == 'POST':
-        form = CommentForm(request.POST)
+        form = ShopCommentForm(request.POST)
         if form.is_valid():
-            form.save()
-            # Redirect to a success page, or render a success message
-            return redirect('success_url_name')
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.shop = shop  # Düzeltme: 'blog' değişkeni 'shop' olarak değiştirildi
+            comment.save()
+            messages.success(request, 'Your comment was successfully added.')
+            return redirect('shop_details', shop_slug=shop.slug)  # Düzeltme: 'blog_details' view'i 'shop_details' olarak değiştirildi
     else:
-        form = CommentForm()
-    
-    return render(request, 'shop-details.html', {'form': form})
+        form = ShopCommentForm()
 
-
+    return render(request, 'shop-details.html', {'shop': shop, 'form': form})

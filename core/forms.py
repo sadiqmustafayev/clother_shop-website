@@ -32,13 +32,14 @@ class ContactForm(forms.ModelForm):
 
 
 
-class CommentForm(forms.ModelForm):
+
+class ShopCommentForm(forms.ModelForm):
     class Meta:
         model = ShopComments
         fields = ['name', 'email', 'phone_number', 'comment']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Name'}),
-            'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
-            'phone_number': forms.TextInput(attrs={'placeholder': 'Phone'}),
-            'comment': forms.Textarea(attrs={'placeholder': 'Comment'}),
+            'name': forms.TextInput(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Name'}),
+            'email': forms.EmailInput(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Email'}),
+            'phone_number': forms.TextInput(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Phone Number'}),
+            'comment': forms.Textarea(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Comment'}),
         }
