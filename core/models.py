@@ -1,3 +1,5 @@
+import random
+import string
 from django.db import models
 from django.utils import timezone
 from core.utills.replace_letter import replace_letter
@@ -122,6 +124,7 @@ class Product(BaseModel):
   images = models.ManyToManyField(ShopImage, blank=True)
   # size = models.CharField(max_length=50, choices=SIZE, default='M')
   size = models.ManyToManyField(Size)
+  sku = models.UUIDField(max_length=20, unique=True, editable=False, null=True)
   like = models.IntegerField(default=0)
   rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
   currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True)
@@ -133,6 +136,15 @@ class Product(BaseModel):
   class Meta:
     verbose_name = _("Product")
     verbose_name_plural = _("Product")
+
+  @property
+  def sku(self):
+       return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+
+  def save(self, *args, **kwargs):
+        if not self.sku:
+            self.sku = self.generate_sku()
+        super().save(*args, **kwargs)
 
   def name_and_price(self):
     return f'{self.name} - {self.price} AZN'

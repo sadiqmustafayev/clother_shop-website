@@ -15,7 +15,7 @@ admin.site.site_header = 'MaleFashion Admin'
 #     extra = 1
 
 class ProductAdmin(TranslationAdmin):
-    list_display = ('name', 'price', 'category_name', 'size_names', 'currency', 'get_discount_price', ) 
+    list_display = ('name', 'price', 'category_name', 'size_names', 'get_discount_price', 'sku',) 
     search_fields = ('name', 'price', 'category__name', 'color__name')
     list_filter = ('category', 'color')
     readonly_fields = ('like',)
