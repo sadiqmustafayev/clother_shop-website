@@ -103,7 +103,7 @@ def shop(request):
     products = Product.objects.filter(is_active=True).order_by("-created_at")
     user_input = ""
 
-     # Arama işlemi POST isteği ile yapılıyorsa
+    # Arama işlemi POST isteği ile yapılıyorsa
     if request.method == 'POST':
         user_input = request.POST.get('shop_search')
         if user_input:
@@ -122,16 +122,40 @@ def shop(request):
         page_obj = paginator.page(paginator.num_pages)
 
     categories = ShopCategory.objects.filter(is_active=True)
+    sizes = Size.objects.all()
+    colors = Color.objects.all()
 
-    
+    # Fiyat aralıkları listesi
+    price_ranges = [
+        {"start": 0, "end": 50},
+        {"start": 50, "end": 100},
+        {"start": 100, "end": 150},
+        # Diğer fiyat aralıkları buraya eklenebilir
+    ]
+
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+
+    # Her fiyat aralığı için ürün sayısını hesapla
+    def count_products_in_price_range(min_price, max_price):
+        return Product.objects.filter(price__gte=min_price, price__lte=max_price).count()
+
+    product_counts = {f"{price_range['start']}-{price_range['end']}": count_products_in_price_range(price_range["start"], price_range["end"]) for price_range in price_ranges}
+
     context = {
         'title': 'Shop',
         'page_obj': page_obj,  # Paginator'un get_page metodu ile sayfaları alıyoruz
         'products': products,
         'user_input': user_input,
         'categories': categories,
+        'sizes': sizes,
+        'colors': colors,
+        'min_price': min_price,
+        'max_price': max_price,
+        'price_ranges': price_ranges,
+        'product_counts': product_counts,
     }
-    
+
     return render(request, 'shop.html', context=context)
 
 
@@ -152,6 +176,33 @@ def shop_details(request, shop_slug):
     
     return render(request, 'shop-details.html', context=context)
 
+
+
+@login_required
+def add_comment(request, shop_slug):
+    shop = get_object_or_404(Product, slug=shop_slug)
+
+    if request.method == 'POST':
+        form = ShopCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.shop = shop
+            comment.save()
+            messages.success(request, 'Your comment was successfully added.')
+            return redirect('shop_details', shop_slug=shop_slug)
+    else:
+        form = ShopCommentForm()
+
+    context = {
+        'title': shop.name,
+        'shop': shop,
+        'form': form,
+    }
+    
+    return render(request, 'shop-details.html', context=context)
+
+
 def shopping_cart(request):
   context = {
     'title' : 'Shopping Cart',
@@ -165,20 +216,15 @@ def faq(request):
   return render(request, 'faq.html', context=context)
   
 
-@login_required
-def add_comment(request, shop_slug):
-    shop = get_object_or_404(Product, slug=shop_slug)
+def filter_price(request):
+    # Fiyat aralıklarını belirleyin, bu örnekte varsayılan fiyat aralıkları kullanılıyor
+    price_ranges = [
+        {"start": 0.00, "end": 50.00},
+        {"start": 50.00, "end": 100.00},
+        {"start": 100.00, "end": 150.00},
+        {"start": 150.00, "end": 200.00},
+        {"start": 200.00, "end": 250.00},
+        {"start": 250.00, "end": None},  # None, 250.00+ için sonsuz olarak kabul edilir
+    ]
 
-    if request.method == 'POST':
-        form = ShopCommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.shop = shop  # Düzeltme: 'blog' değişkeni 'shop' olarak değiştirildi
-            comment.save()
-            messages.success(request, 'Your comment was successfully added.')
-            return redirect('shop_details', shop_slug=shop.slug)  # Düzeltme: 'blog_details' view'i 'shop_details' olarak değiştirildi
-    else:
-        form = ShopCommentForm()
-
-    return render(request, 'shop-details.html', {'shop': shop, 'form': form})
+    return render(request, 'filter_price.html', {'price_ranges': price_ranges})

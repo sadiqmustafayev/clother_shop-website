@@ -27,8 +27,6 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-
-<!-- Shop Section Begin -->
 <section class="shop spad">
     <div class="container">
         <div class="row">
@@ -46,7 +44,6 @@
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
                                 </div>
-                                
                                 <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                                     <div class="card-body">
                                         <div class="shop__sidebar__categories">
@@ -58,7 +55,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+                            </div>
                             <div class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
@@ -76,7 +73,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            
+                            <div id="filterPrice" class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
                                 </div>
@@ -84,17 +82,18 @@
                                     <div class="card-body">
                                         <div class="shop__sidebar__price">
                                             <ul>
-                                                <li><a href="#">$0.00 - $50.00</a></li>
-                                                <li><a href="#">$50.00 - $100.00</a></li>
-                                                <li><a href="#">$100.00 - $150.00</a></li>
-                                                <li><a href="#">$150.00 - $200.00</a></li>
-                                                <li><a href="#">$200.00 - $250.00</a></li>
-                                                <li><a href="#">250.00+</a></li>
+                                                {% for price_range in price_ranges %}
+                                                    {% if price_range.end %}
+                                                        <li><a href="{% url 'shop' %}?min_price={{ price_range.start }}&max_price={{ price_range.end }}">${{ price_range.start|floatformat:2 }} - ${{ price_range.end|floatformat:2 }}</a></li>
+                                                    {% else %}
+                                                        <li><a href="{% url 'shop' %}?min_price={{ price_range.start }}">${{ price_range.start|floatformat:2 }}+</a></li>
+                                                    {% endif %}
+                                                {% endfor %}
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                                                        
                             <div class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseFour">Size</a>
@@ -102,30 +101,9 @@
                                 <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
                                     <div class="card-body">
                                         <div class="shop__sidebar__size">
-                                            <label for="xs">xs
-                                                <input type="radio" id="xs">
-                                            </label>
-                                            <label for="sm">s
-                                                <input type="radio" id="sm">
-                                            </label>
-                                            <label for="md">m
-                                                <input type="radio" id="md">
-                                            </label>
-                                            <label for="xl">xl
-                                                <input type="radio" id="xl">
-                                            </label>
-                                            <label for="2xl">2xl
-                                                <input type="radio" id="2xl">
-                                            </label>
-                                            <label for="xxl">xxl
-                                                <input type="radio" id="xxl">
-                                            </label>
-                                            <label for="3xl">3xl
-                                                <input type="radio" id="3xl">
-                                            </label>
-                                            <label for="4xl">4xl
-                                                <input type="radio" id="4xl">
-                                            </label>
+                                            {% for size in sizes %}
+                                                <label for="{{ size.name }}">{{ size.name }} <input type="radio" id="{{ size.name }}"></label>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -137,33 +115,9 @@
                                 <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
                                     <div class="card-body">
                                         <div class="shop__sidebar__color">
-                                            <label class="c-1" for="sp-1">
-                                                <input type="radio" id="sp-1">
-                                            </label>
-                                            <label class="c-2" for="sp-2">
-                                                <input type="radio" id="sp-2">
-                                            </label>
-                                            <label class="c-3" for="sp-3">
-                                                <input type="radio" id="sp-3">
-                                            </label>
-                                            <label class="c-4" for="sp-4">
-                                                <input type="radio" id="sp-4">
-                                            </label>
-                                            <label class="c-5" for="sp-5">
-                                                <input type="radio" id="sp-5">
-                                            </label>
-                                            <label class="c-6" for="sp-6">
-                                                <input type="radio" id="sp-6">
-                                            </label>
-                                            <label class="c-7" for="sp-7">
-                                                <input type="radio" id="sp-7">
-                                            </label>
-                                            <label class="c-8" for="sp-8">
-                                                <input type="radio" id="sp-8">
-                                            </label>
-                                            <label class="c-9" for="sp-9">
-                                                <input type="radio" id="sp-9">
-                                            </label>
+                                            {% for color in colors %}
+                                                <label class="{{ color.class }}" for="{{ color.id }}"><input type="radio" id="{{ color.id }}"></label>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +132,7 @@
                                             <a href="#">Product</a>
                                             <a href="#">Bags</a>
                                             <a href="#">Shoes</a>
-                                            <a href="#">Fashio</a>
+                                            <a href="#">Fashion</a>
                                             <a href="#">Clothing</a>
                                             <a href="#">Hats</a>
                                             <a href="#">Accessories</a>
@@ -200,81 +154,75 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__right">
-                                
+                                <!-- Buraya istediğiniz ek içeriği ekleyebilirsiniz -->
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     {% for product in products %}
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item sale">
-                            <div class="product__item__pic set-bg" data-setbg="{{ product.images.first.image1.url }}">
-                                <ul class="product__hover">
-                                    <li><a href="#"><img src="{% static 'img/icon/heart.png' %}" alt=""></a></li>
-                                    <li><a href="#"><img src="{% static 'img/icon/compare.png' %}" alt=""> <span>Compare</span></a>
-                                    </li>
-                                    <li><a href="#"><img src="{% static 'img/icon/search.png' %}" alt=""></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6>{{ product.name }}</h6>
-                                <div class="rating">
-                                    {% for _ in "12345" %}
-                                    {% if forloop.counter <= product.like %}
-                                        <i class="fa fa-star"></i> <!-- Dolu yıldız -->
-                                    {% else %}
-                                        <i class="fa fa-star-o"></i> <!-- Boş yıldız -->
-                                    {% endif %}
-                                {% endfor %}
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item sale">
+                                <div class="product__item__pic set-bg" data-setbg="{{ product.images.first.image1.url }}">
+                                    <ul class="product__hover">
+                                        <li><a href="#"><img src="{% static 'img/icon/heart.png' %}" alt=""></a></li>
+                                        <li><a href="#"><img src="{% static 'img/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                                        <li><a href="#"><img src="{% static 'img/icon/search.png' %}" alt=""></a></li>
+                                    </ul>
                                 </div>
-                                <h5>${{ product.price }}</h5>
-                                <div class="product__color__select">
-                                    <label for="pc-4">
-                                        <input type="radio" id="pc-4">
-                                    </label>
-                                    <label class="active black" for="pc-5">
-                                        <input type="radio" id="pc-5">
-                                    </label>
-                                    <label class="grey" for="pc-6">
-                                        <input type="radio" id="pc-6">
-                                    </label>
+                                <div class="product__item__text">
+                                    <h6>{{ product.name }}</h6>
+                                    <div class="rating">
+                                        {% for _ in "12345" %}
+                                            {% if forloop.counter <= product.like %}
+                                                <i class="fa fa-star"></i> <!-- Dolu yıldız -->
+                                            {% else %}
+                                                <i class="fa fa-star-o"></i> <!-- Boş yıldız -->
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <h5>${{ product.price }}</h5>
+                                    <div class="product__color__select">
+                                        <label for="pc-4"><input type="radio" id="pc-4"></label>
+                                        <label class="active black" for="pc-5"><input type="radio" id="pc-5"></label>
+                                        <label class="grey" for="pc-6"><input type="radio" id="pc-6"></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
-
-
-                
-        
                 </div>
                 <!-- Pagination Links -->
                 <div class="row">
-        <nav class="product__pagination">
-            <div class="nav-link">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo;</a>
-                {% endif %}
-                
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <a class="active" href="?page={{ num }}">{{ num }}</a>
-                    {% else %}
-                        <a href="?page={{ num }}">{{ num }}</a>
-                    {% endif %}
-                {% endfor %}
-                
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}"> &raquo;</a>
-                {% endif %}
-            </div>
-        </nav>
+                    <nav class="product__pagination">
+                        <div class="nav-link">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo;</a>
+                            {% endif %}
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <a class="active" href="?page={{ num }}">{{ num }}</a>
+                                {% else %}
+                                    <a href="?page={{ num }}">{{ num }}</a>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}"> &raquo;</a>
+                            {% endif %}
+                        </div>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Shop Section End -->
+
+
+<script>
+    $(document).ready(function(){
+    $("#collapseThree").remove();
+});
+</script>
 
 {% endblock %}

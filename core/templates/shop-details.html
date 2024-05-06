@@ -169,10 +169,11 @@
                     <p>You must be <a href="{% url 'login' %}" style="color: black;">logged in</a> to post a comment.</p>
                     {% endif %}
                 </div><br>
+                
                 <div class="blog__details__comment">
                     <h4>Comments</h4>
                     <ul class="comment-list">
-                        {% for comment in product.shopcomments_set.all %}
+                        {% for comment in product.shopcomments.all %}
                             <li>
                                 <p><strong>{{ comment.name }}</strong> - {{ comment.created_at }}</p>
                                 <p>{{ comment.comment }}</p>
@@ -182,6 +183,7 @@
                         {% endfor %}
                     </ul>
                 </div>
+                
 
 
                 </div>

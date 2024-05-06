@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="filterPrice" class="card">
+    <div class="card-heading">
+        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+    </div>
+    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+        <div class="card-body">
+            <div class="shop__sidebar__price">
+                <ul>
+                    {% for price_range in price_ranges %}
+                        {% if price_range.end %}
+                            <li><a href="#">{{ "${:.2f} - {:.2f}".format(price_range.start|floatformat:2, price_range.end|floatformat:2) }}</a></li>
+                        {% else %}
+                            <li><a href="#">{{ "${:.2f}+".format(price_range.start|floatformat:2) }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
