@@ -1,5 +1,5 @@
 from django import forms
-from core.models import Contact, ShopComments
+from core.models import Contact, ShopComments, BlogComments
 
 
 class ContactForm(forms.ModelForm):
@@ -30,9 +30,6 @@ class ContactForm(forms.ModelForm):
     }
 
 
-
-
-
 class ShopCommentForm(forms.ModelForm):
     class Meta:
         model = ShopComments
@@ -43,3 +40,13 @@ class ShopCommentForm(forms.ModelForm):
             'phone_number': forms.TextInput(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Phone Number'}),
             'comment': forms.Textarea(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Comment'}),
         }
+
+
+class SizeSelectionForm(forms.Form):
+    selected_sizes = forms.MultipleChoiceField(choices=[('XS', 'XS'), ('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'), ('XXL', 'XXL')], widget=forms.CheckboxSelectMultiple)
+
+
+class BlogCommentForm(forms.ModelForm):
+    class Meta:
+        model = BlogComments
+        fields = ['name', 'email', 'phone_number', 'comment']

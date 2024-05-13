@@ -83,6 +83,13 @@ class ColorAdmin(TranslationAdmin):
     
 
 
+class BlogCommentsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone_number', 'comment')
+    search_fields = ('name', 'email', 'comment')
+    list_filter = ('name', 'email')
+
+admin.site.register(BlogComments, BlogCommentsAdmin)
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Blog, BlogAdmin)
 # admin.site.register(Color, ColorAdmin)

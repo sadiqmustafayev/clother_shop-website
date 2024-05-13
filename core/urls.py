@@ -3,6 +3,7 @@ from django.urls import path
 from django.views.i18n import set_language
 from core.views import (
   
+  blog_add_comment,
   index,
   about,
   blog_details,
@@ -35,5 +36,6 @@ urlpatterns = [
     # path('add_comment/<slug:shop_slug>/', add_comment, name='add_comment'),
     # path('shop-details/add_comment/<slug:shop_slug>/', add_comment, name='add_comment'),
     path('shop-details/<str:shop_slug>/add_comment/', add_comment, name='add_comment'),
+    path('blog-details/<str:blog_slug>/add_comment/', blog_add_comment, name='blog_add_comment'),
     path('', include('social_django.urls', namespace='social')),
 ]

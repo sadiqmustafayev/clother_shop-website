@@ -33,9 +33,10 @@
             <div class="col-lg-3">
                 <div class="shop__sidebar">
                     <div class="shop__sidebar__search">
-                        <form action="#">
-                            <input type="text" placeholder="Search...">
-                            <button type="submit"><span class="icon_search"></span></button>
+                        <form id="search-form" method="post" style="display: flex; align-items: center;">
+                            {% csrf_token %}
+                            <input value="{{ user_input }}" type="text" id="shop_search" name="shop_search" class="form-control" style="width: 300px; margin-right: 10px;" placeholder="Search by shop...">
+                            <button type="submit" class="btn btn-primary">Search</button>
                         </form>
                     </div>
                     <div class="shop__sidebar__accordion">

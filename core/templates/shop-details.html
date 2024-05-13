@@ -96,11 +96,12 @@
                                 <div class="product__details__option__size">
                                     <span class="option-label">Size:</span>
                                     {% for size in sizes %}
-                                    <label for="{{ size.id }}" class="size-label">{{ size.name }}
-                                        <input type="radio" id="{{ size.id }}" name="size">
+                                    <label for="{{ size.name }}" class="size-label">{{ size.name }}
+                                        <input type="radio" id="{{ size.name }}" name="size">
                                     </label>
                                     {% endfor %}
                                 </div>
+                            
                                 <div class="product__details__option__color">
                                     <span>Color:</span>
                                     <label class="c-1" for="sp-1">

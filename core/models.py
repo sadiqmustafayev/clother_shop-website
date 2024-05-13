@@ -5,6 +5,7 @@ from django.utils import timezone
 from core.utills.replace_letter import replace_letter
 from django.utils.translation import gettext as _
 from phonenumber_field.modelfields import PhoneNumberField
+from django.conf import settings
 import uuid
 
 
@@ -88,21 +89,6 @@ class ShopImage(models.Model):
         return self.name
     
 
-class ShopComments(BaseModel):
-  name = models.CharField(max_length=50)
-  email = models.EmailField()
-  phone_number = PhoneNumberField(blank=True)
-  comment = models.TextField()
-
-  @staticmethod
-  def search_feed(query):
-        return ShopComments.objects.filter(text__icontains=query)
-
-
-  class Meta:
-    verbose_name = _("ShopComments")
-    verbose_name_plural = _("ShopComments")
-
 
 class ShopCategory(BaseModel):
   name = models.CharField(max_length=50)
@@ -161,6 +147,26 @@ class Product(BaseModel):
         return super(Product, self).save(*args, **kwargs)
 
 
+class ShopComments(models.Model):
+    product = models.ForeignKey(Product, related_name='shopcomments', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    phone_number = PhoneNumberField(max_length=20, blank=False)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @staticmethod
+    def search_feed(query):
+        return ShopComments.objects.filter(text__icontains=query)
+
+
+    class Meta:
+        verbose_name = _("Shop Comment")
+        verbose_name_plural = _("Shop Comments")
+        ordering = ('-created_at', )
+
+
 class Blog(BaseModel):
   slug = models.SlugField(max_length=100, unique=True)
   title = models.CharField(max_length=100)
@@ -183,6 +189,26 @@ class Blog(BaseModel):
     if not self.slug or self.slug != self.title.lower():
         self.slug = replace_letter(self.title.lower())
     return super(Blog, self).save(*args, **kwargs)
+
+
+class BlogComments(models.Model):
+    blog = models.ForeignKey(Blog, related_name='blogcomments', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    phone_number = PhoneNumberField(max_length=20, blank=False)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @staticmethod
+    def search_feed(query):
+        return ShopComments.objects.filter(text__icontains=query)
+
+
+    class Meta:
+        verbose_name = _("Blog Comment")
+        verbose_name_plural = _("Blog Comments")
+        ordering = ('-created_at', )
 
 
 class ContactUs(BaseModel):

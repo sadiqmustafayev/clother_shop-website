@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from core.forms import ShopCommentForm, ContactForm
+from core.forms import BlogCommentForm, ShopCommentForm, ContactForm
 from core.models import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
@@ -162,6 +162,9 @@ def shop(request):
 def shop_details(request, shop_slug):
     product = Product.objects.get(slug=shop_slug)
     form = None  # Boş bir form tanımlıyoruz
+    sizes = Size.objects.filter(product=product)
+    
+
 
     if request.method == 'POST':
         form = ShopCommentForm(request.POST)
@@ -172,6 +175,7 @@ def shop_details(request, shop_slug):
         'title': product.name,
         'product': product,
         'form': form,  # Formu context'e ekliyoruz
+        'sizes': sizes,
     }
     
     return render(request, 'shop-details.html', context=context)
@@ -188,6 +192,7 @@ def add_comment(request, shop_slug):
             comment = form.save(commit=False)
             comment.user = request.user
             comment.shop = shop
+            comment.product_id = shop.id 
             comment.save()
             messages.success(request, 'Your comment was successfully added.')
             return redirect('shop_details', shop_slug=shop_slug)
@@ -201,6 +206,30 @@ def add_comment(request, shop_slug):
     }
     
     return render(request, 'shop-details.html', context=context)
+
+@login_required
+def blog_add_comment(request, blog_slug):
+    blog = get_object_or_404(Blog, slug=blog_slug)
+
+    if request.method == 'POST':
+        form = BlogCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.blog = blog
+            comment.save()
+            # Yorum başarıyla eklendiğinde yönlendirme yapabilirsiniz
+            return redirect('blog-details', blog_slug=blog.slug)
+    else:
+        form = BlogCommentForm()
+
+    context = {
+        'title': blog.title,
+        'blog': blog,
+        'form': form,
+    }
+
+    return render(request, 'blog-details.html', context=context)
 
 
 def shopping_cart(request):
