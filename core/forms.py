@@ -1,5 +1,5 @@
 from django import forms
-from core.models import Contact, ShopComments, BlogComments
+from core.models import Contact, ShopComments, BlogComments, Subscriber
 
 
 class ContactForm(forms.ModelForm):
@@ -35,11 +35,19 @@ class ShopCommentForm(forms.ModelForm):
         model = ShopComments
         fields = ['name', 'email', 'phone_number', 'comment']
         widgets = {
-            'name': forms.TextInput(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Name'}),
-            'email': forms.EmailInput(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Email'}),
-            'phone_number': forms.TextInput(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Phone Number'}),
-            'comment': forms.Textarea(attrs={'style': 'color: black;', 'class': 'blog__details__comment form-control', 'placeholder': 'Comment'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Comment'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'style': 'color: black;'})
+        self.fields['email'].widget.attrs.update({'style': 'color: black;'})
+        self.fields['phone_number'].widget.attrs.update({'style': 'color: black;'})
+        self.fields['comment'].widget.attrs.update({'style': 'color: black;'})
+
 
 
 class SizeSelectionForm(forms.Form):
@@ -50,3 +58,9 @@ class BlogCommentForm(forms.ModelForm):
     class Meta:
         model = BlogComments
         fields = ['name', 'email', 'phone_number', 'comment']
+
+
+class SubscriberForm(forms.ModelForm):
+    class Meta:
+        model = Subscriber
+        fields = ['email']

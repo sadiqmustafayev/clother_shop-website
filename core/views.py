@@ -1,19 +1,28 @@
 # from pyexpat.errors import messages
 from django.contrib import messages
+from django.urls import reverse
 from django.views.generic import ListView  
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.contrib import messages
+from celery import shared_task
+from django.db.models import Q
+from django.contrib.auth.decorators import user_passes_test, login_required
+from django.utils.translation import gettext as _
 from core.forms import BlogCommentForm, ShopCommentForm, ContactForm
 from core.models import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+from user.models import MyUser
+
 def index(request):
-   context = {
-    'title' : 'Home',
-   }
-   return render(request, 'index.html', context=context)
-  
+    # Əgər modelinizdəki bütün blog məlumatlarını göstərmək istəyirsinizsə:
+    blogs = Blog.objects.all()[:3]  # 3 ədəd məlumat götür
+    context = {'blogs': blogs}
+    return render(request, 'index.html', context=context)
+
+ 
 def about(request):
   context = {
     'title' : 'About',
@@ -232,11 +241,22 @@ def blog_add_comment(request, blog_slug):
     return render(request, 'blog-details.html', context=context)
 
 
+
 def shopping_cart(request):
-  context = {
-    'title' : 'Shopping Cart',
-   }
-  return render(request, 'shopping-cart.html', context=context)
+    if request.method == 'POST':
+        # Eğer POST isteği gönderildiyse, sepete ürün ekleyin
+        product_slug = request.POST.get('product_slug')
+        # Sepete ekleme işlemleri burada yapılmalıdır.
+        # Örneğin:
+        # CartItem.objects.create(product_slug=product_slug)
+        # İşlem başarıyla gerçekleştirildikten sonra alışveriş sepeti sayfasına yönlendirin
+        return redirect(reverse('shopping_cart'))
+
+    context = {
+        'title': 'Shopping Cart',
+    }
+    return render(request, 'shopping-cart.html', context=context)
+
 
 def faq(request):
   context = {
@@ -257,3 +277,86 @@ def filter_price(request):
     ]
 
     return render(request, 'filter_price.html', {'price_ranges': price_ranges})
+
+
+@login_required
+@user_passes_test(lambda u: u.has_perm('subscriber.can_send_email'))
+def send_email(request):
+    setting = Setting.objects.first()
+
+    if request.method == 'POST':
+        recipient_list = []
+        to_subscribers = request.POST.get('to_subscribers')
+        to_baseusers = request.POST.get('to_baseusers')
+        to_contacts = request.POST.get('to_contacts')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        sender = 'your-email@example.com'
+
+        # Check for required fields
+        if not subject or not message:
+            context = {
+                'error': _('Subject and message are required fields.'),
+                'user_count': MyUser.objects.count(),
+                'subscriber_count': Subscriber.objects.count(),
+                'setting': setting,
+                'contact_count': Contact.objects.count(),
+            }
+            return render(request, 'send_email.html', context)
+
+        if 'recipient_list[]' in request.POST:
+            recipient_list = request.POST.getlist('recipient_list[]')
+
+        if to_subscribers:
+            subscribers = Subscriber.objects.filter(is_active=True)
+            subscriber_emails = subscribers.values_list('email', flat=True)
+            recipient_list += list(subscriber_emails)
+
+        if to_baseusers:
+            baseuser_emails = MyUser.objects.filter(
+                Q(is_active=True) & Q(email__isnull=False)).values_list('email', flat=True)
+            recipient_list += list(baseuser_emails)
+
+        if to_contacts:
+            contact_emails = Contact.objects.filter(
+                Q(email__isnull=False)).values_list('email', flat=True)
+            recipient_list += list(contact_emails)
+
+        recipient_list = list(set(recipient_list))
+
+        send_mail(
+            subject,
+            message,
+            sender,
+            recipient_list,
+            fail_silently=False,
+        )
+
+        context = {
+            'message': _('Email has been sent successfully!'),
+            'setting': setting,
+            'contact_count': Contact.objects.count(),
+            'user_count': MyUser.objects.count(),
+            'subscriber_count': Subscriber.objects.count(),
+        }
+        return render(request, 'email_sent.html', context)
+
+    context = {
+        'user_count': MyUser.objects.count(),
+        'subscriber_count': Subscriber.objects.count(),
+        'setting': setting,
+        'contact_count': Contact.objects.count(),
+    }
+    return render(request, 'send_email.html', context)
+
+
+def subscribe(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            subscriber, created = Subscriber.objects.get_or_create(email=email)
+            if created:
+                return HttpResponse('You have been subscribed successfully.')
+            else:
+                return HttpResponse('You are already subscribed.')
+    return redirect('/')

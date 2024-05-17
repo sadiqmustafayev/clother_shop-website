@@ -268,3 +268,14 @@ class FAQ(BaseModel):
   
   def __str__(self):
     return self.question
+  
+
+class Subscriber(BaseModel):
+  email = models.EmailField()
+  is_active = models.BooleanField(default=True)
+
+  def __str__(self):
+    return self.email
+
+  class Meta:
+    permissions = (('can_send_email', 'Can Send Email'), )

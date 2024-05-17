@@ -80,7 +80,13 @@ class ShopCommentsAdmin(admin.ModelAdmin):
 class ColorAdmin(TranslationAdmin):
     list_display = ('name',)  
     search_fields = ('name',)
-    
+
+
+@admin.register(Subscriber)
+class SubscriberAdmin(admin.ModelAdmin):
+  list_display = ['email', 'created_at']
+  list_filter = ['email', 'created_at']
+  search_fields = ['email', 'created_at']    
 
 
 class BlogCommentsAdmin(admin.ModelAdmin):

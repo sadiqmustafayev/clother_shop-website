@@ -1,0 +1,28 @@
+<!-- newsletter/templates/newsletter/send_email.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Email</title>
+</head>
+<body>
+    <h2>Send Email</h2>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required><br>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea><br>
+        <label><input type="checkbox" name="to_subscribers"> To Subscribers</label><br>
+        <label><input type="checkbox" name="to_baseusers"> To Base Users</label><br>
+        <label><input type="checkbox" name="to_contacts"> To Contacts</label><br>
+        <button type="submit">Send Email</button>
+    </form>
+    <p>Subscribers: {{ subscriber_count }}</p>
+    <p>Users: {{ user_count }}</p>
+    <p>Contacts: {{ contact_count }}</p>
+</body>
+</html>

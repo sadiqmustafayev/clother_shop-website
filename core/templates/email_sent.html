@@ -1,0 +1,17 @@
+<!-- newsletter/templates/newsletter/email_sent.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Sent</title>
+</head>
+<body>
+    <h2>{{ message }}</h2>
+    <p>Subscribers: {{ subscriber_count }}</p>
+    <p>Users: {{ user_count }}</p>
+    <p>Contacts: {{ contact_count }}</p>
+</body>
+</html>
+{% endblock %}

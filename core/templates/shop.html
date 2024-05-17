@@ -8,8 +8,6 @@
 
 {% block content %}
 
-
-
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -27,6 +25,7 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
+
 <section class="shop spad">
     <div class="container">
         <div class="row">
@@ -74,7 +73,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
                             <div id="filterPrice" class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
@@ -150,7 +148,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__left">
-                                <p>Showing 1–{{ products|length }} of {{ total_results }} results</p>
+                                <p>Showing 1–{{ page_obj.end_index }} of {{ page_obj.paginator.count }} results</p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -161,13 +159,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    {% for product in products %}
+                    {% for product in page_obj %}
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item sale">
                                 <div class="product__item__pic set-bg" data-setbg="{{ product.images.first.image1.url }}">
+                                    <a href="{% url 'shop_details' shop_slug=product.slug %}">{{ product.name }}</a>
+
                                     <ul class="product__hover">
                                         <li><a href="#"><img src="{% static 'img/icon/heart.png' %}" alt=""></a></li>
-                                        <li><a href="#"><img src="{% static 'img/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                                        <form action="{% url 'shopping_cart' %}" method="post" class="add-to-cart-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product_slug" value="{{ product.slug }}">
+                                            <button type="submit" class="add-to-cart-button">
+                                                <img src="{% static 'img/icon/cart.png' %}" alt="Add to Cart">
+                                            </button>
+                                        </form>
                                         <li><a href="#"><img src="{% static 'img/icon/search.png' %}" alt=""></a></li>
                                     </ul>
                                 </div>
@@ -199,6 +205,7 @@
                         <div class="nav-link">
                             {% if page_obj.has_previous %}
                                 <a href="?page=1">&laquo;</a>
+                                
                             {% endif %}
                             {% for num in page_obj.paginator.page_range %}
                                 {% if page_obj.number == num %}
@@ -218,12 +225,5 @@
         </div>
     </div>
 </section>
-
-
-<script>
-    $(document).ready(function(){
-    $("#collapseThree").remove();
-});
-</script>
 
 {% endblock %}

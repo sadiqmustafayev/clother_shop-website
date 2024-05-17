@@ -1,3 +1,4 @@
+from core import views
 from django.urls import include
 from django.urls import path 
 from django.views.i18n import set_language
@@ -37,5 +38,7 @@ urlpatterns = [
     # path('shop-details/add_comment/<slug:shop_slug>/', add_comment, name='add_comment'),
     path('shop-details/<str:shop_slug>/add_comment/', add_comment, name='add_comment'),
     path('blog-details/<str:blog_slug>/add_comment/', blog_add_comment, name='blog_add_comment'),
+    path('send_email/', views.send_email, name='send_email'),
+    path('subscribe/', views.subscribe, name='subscribe'),
     path('', include('social_django.urls', namespace='social')),
 ]

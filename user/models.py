@@ -11,3 +11,5 @@ class MyUser(AbstractUser):
   zip_code = models.CharField(max_length=10)
   updated_at = models.DateTimeField(auto_now=True)
   date_of_birth = models.DateField(null=True, blank=True)
+  email = models.EmailField(max_length=255, unique=True)
+
